@@ -44,6 +44,8 @@ public abstract class SearchablePaneController<T> implements Initializable {
     @FXML
     private JFXButton clearSearchFieldButton;
     @FXML
+    private JFXButton clearSearchPaneButton;
+    @FXML
     private TextField searchTextField;
     @FXML
     private VBox searchTab, searchBox, searchPane;
