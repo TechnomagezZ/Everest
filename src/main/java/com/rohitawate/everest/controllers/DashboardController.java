@@ -43,6 +43,7 @@ import com.rohitawate.everest.sync.SyncManager;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,6 +52,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import org.fxmisc.flowless.VirtualizedScrollPane;
@@ -834,6 +837,15 @@ public class DashboardController implements Initializable {
         responseArea.clear();
         showLayer(ResponseLayer.PROMPT);
         responseTabPane.getSelectionModel().select(0);
+        
+    }
+    @FXML
+    void CopyContent(ActionEvent event) {
+    	String copyText = responseArea.getText();
+    	final Clipboard clipboard = Clipboard.getSystemClipboard();
+    	final ClipboardContent content = new ClipboardContent();
+    	content.putString(copyText);
+    	clipboard.setContent(content);
     }
 
     void clearParams() {
