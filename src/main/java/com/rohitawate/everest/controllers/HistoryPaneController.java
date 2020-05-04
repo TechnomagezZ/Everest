@@ -16,9 +16,13 @@
 
 package com.rohitawate.everest.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.rohitawate.everest.controllers.search.SearchablePaneController;
 import com.rohitawate.everest.state.ComposerState;
 import com.rohitawate.everest.sync.SyncManager;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseButton;
@@ -36,6 +40,9 @@ public class HistoryPaneController extends SearchablePaneController<ComposerStat
     protected List<ComposerState> loadInitialEntries() {
 		return syncManager.getHistory();
 	}
+	
+    @FXML
+    private JFXButton clearSearchPaneButton;
 
     protected SearchEntry<ComposerState> createEntryFromState(ComposerState state) throws IOException {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homewindow/HistoryItem.fxml"));
@@ -52,6 +59,11 @@ public class HistoryPaneController extends SearchablePaneController<ComposerStat
 
 		return new SearchEntry<>(historyItem, controller);
 	}
+    @FXML
+    void clearHistoryPaneButton(ActionEvent event) {
+    	syncManager.clearHistory();
+
+    }
 
     private void handleClick(ComposerState state) {
         for (Consumer<ComposerState> consumer : stateClickHandler) {
