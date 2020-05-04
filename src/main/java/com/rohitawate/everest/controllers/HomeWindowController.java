@@ -17,6 +17,7 @@
 package com.rohitawate.everest.controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+//import com.jfoenix.controls.JFXButton.ButtonType;
 import com.rohitawate.everest.logging.LoggingService;
 import com.rohitawate.everest.misc.EverestUtilities;
 import com.rohitawate.everest.misc.KeyMap;
@@ -34,9 +35,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -47,6 +55,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class HomeWindowController implements Initializable {
@@ -56,6 +65,7 @@ public class HomeWindowController implements Initializable {
     private SplitPane splitPane;
     @FXML
     private TabPane tabPane;
+    Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
 
     private HashMap<Tab, DashboardState> tabStateMap;
     private HistoryPaneController historyController;
@@ -207,12 +217,20 @@ public class HomeWindowController implements Initializable {
 
         newTab.setOnCloseRequest(e -> {
             removeTab(newTab);
-
             // Closes the application if the last tab is closed
             if (tabPane.getTabs().size() == 0) {
-                saveState();
-                Stage thisStage = (Stage) homeWindowSP.getScene().getWindow();
-                thisStage.close();
+            	Alert alert = new Alert(AlertType.CONFIRMATION);
+            	alert.setTitle("Confirmation Dialog");
+            	alert.setContentText("Application will close. Continue?");
+
+            	Optional<javafx.scene.control.ButtonType> result = alert.showAndWait();
+            	if (result.get() == ButtonType.OK){
+            		saveState();
+            		Stage thisStage = (Stage) homeWindowSP.getScene().getWindow();
+            		thisStage.close();
+            	} else {
+            	    // ... user chose CANCEL or closed the dialog
+            	}
             }
         });
     }
